@@ -1,12 +1,12 @@
-#WORKED WITH MARISSA AND HANNAH ON THIS 
+#WORKED WITH MARISSA, HANNAH AND JACOB ON THIS !!!!
 
-import pandas 
-import numpy as pd 
+import pandas as pd 
 import csv 
 
 #PART B
 from sklearn.linear_model import LinearRegression 
 from sklearn.linear_model import LogisticRegression 
+from sklearn.metrics import r2_score 
 
 import matplotlib.pyplot as plt 
 
@@ -22,7 +22,7 @@ class AnalysisData:
         self.dataset = pd.read_csv(filename)
         self.variables = []
         
-        for self.dataset.columns.values:
+        for column in self.dataset.columns.values:
             if column != "competitorname": 
                 self.variables.append(column) 
 
@@ -43,15 +43,24 @@ class LinearAnalysis:
         
     def runSimpleAnalysis(self, data):
         regr = LinearRegression()
-        regr.fit(<candy>, <sugar>)
-        regr.predict(<candy>)
-        r2_score(<sugar>, <predicted values>)
+        best_r2 = -1 
+        best_var = ""
+        for column in data.variables:
+            if column != self.targetY:
+                independent_var = data.dataset[column].values
+                #reshaping from 1D to 2D
+                independent_var = independent_var.reshape(len(independent_var),1)
+                regr = LinearRegression()
+                regr.fit(independent_var, data.dataset[self.targetY])
+                pred = regr.predict(independent_var)
+                r_score = r2_score(data.dataset[self.targetY],pred)
+                if r_score > best_r2:
+                    best_r2 = r_score
+                    best_car = column
+        self.bestX = best_var
+        print(best_var, best_r2)
     
 
-    
-#QUESTION 1             
-data = AnalysisData()
-data.parseFile("candy-data.csv")
         
         
         
@@ -70,7 +79,9 @@ class LogisticAnalysis:
         self.fit = ""
         
         
-
+#QUESTION 1             
+data = AnalysisData()
+data.parseFile("candy-data.csv")
 
 #QUESTION 2 
 #shown in part B and C 
@@ -81,6 +92,9 @@ class LogisticAnalysis:
 #under part B 
 
 
+
+regression_analysis = LinearAnalysis('sugarpercent')
+regression_analysis.runSimpleAnalysis(data)
 
 
 
